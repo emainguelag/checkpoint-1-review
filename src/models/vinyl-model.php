@@ -1,11 +1,26 @@
 <?php
 
-require_once '_connec.php';
 
 
-function addVinyl (array $vinyl) : void
+function createConnection(): PDO 
 {
-    $pdo = new PDO(DSN, USER, PASS);
+    return new PDO(DSN,USER,PASS);
+}
+
+function getAllVinyls(): array 
+{
+    $pdo = createConnection();
+
+    $query = "SELECT * FROM vinyl";
+    $statement = $pdo->query($query);
+    $vinyls = $statement->fetchAll();
+
+    return $vinyls;
+}
+
+function saveAVinyl (array $vinyl) : void
+{
+    $pdo = createConnection();
 
     $query = "INSERT INTO vinyl (title, cover, artist, genre)
     VALUES (:title, :cover, :artist, :genre);";
